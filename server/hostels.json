@@ -1,0 +1,6 @@
+{
+  "hostels": [
+    { "name": "Makkah Hostel", "subtitle": "Khurrianwala", "url": "https://makkahhostel.com/hostel" },
+    { "name": "Makkah Hostel 2", "subtitle": "Rawalpindi", "url": "https://makkahhostel.com/hostel2" }
+  ]
+}
