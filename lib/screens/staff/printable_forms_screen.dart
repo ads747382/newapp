@@ -81,18 +81,18 @@ class PrintableFormsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Printable forms')),
       body: ListView(padding: const EdgeInsets.all(16), children: [
-        Card(child: ListTile(leading: const Icon(Icons.description_outlined), title: const Text('Admission form'), subtitle: const Text('Personal details + rules + declaration'), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => _PdfScreen(title: 'Admission form', build: () => _build(api)))))),
-        Card(child: ListTile(leading: const Icon(Icons.copy_all_outlined), title: const Text('Admission form — 5 copies'), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => _PdfScreen(title: 'Admission form — 5 copies', build: () => _build(api, copies: 5)))))),
-        Card(child: ListTile(leading: const Icon(Icons.rule_outlined), title: const Text('Rules only'), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => _PdfScreen(title: 'Rules & regulations', build: () => _build(api, rulesOnly: true)))))),
+        Card(child: ListTile(leading: const Icon(Icons.description_outlined), title: const Text('Admission form'), subtitle: const Text('Personal details + rules + declaration'), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => _PdfScreen(title: 'Admission form', pdfBuilder: () => _build(api)))))),
+        Card(child: ListTile(leading: const Icon(Icons.copy_all_outlined), title: const Text('Admission form — 5 copies'), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => _PdfScreen(title: 'Admission form — 5 copies', pdfBuilder: () => _build(api, copies: 5)))))),
+        Card(child: ListTile(leading: const Icon(Icons.rule_outlined), title: const Text('Rules only'), trailing: const Icon(Icons.chevron_right), onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => _PdfScreen(title: 'Rules & regulations', pdfBuilder: () => _build(api, rulesOnly: true)))))),
       ]),
     );
   }
 }
 
 class _PdfScreen extends StatelessWidget {
-  const _PdfScreen({required this.title, required this.build});
+  const _PdfScreen({required this.title, required this.pdfBuilder});
   final String title;
-  final Future<Uint8List> Function() build;
+  final Future<Uint8List> Function() pdfBuilder;
   @override
-  Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: Text(title)), body: PdfPreview(build: (_) => build(), canChangeOrientation: false, canChangePageFormat: false));
+  Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: Text(title)), body: PdfPreview(build: (_) => pdfBuilder(), canChangeOrientation: false, canChangePageFormat: false));
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/format.dart';
 import '../../widgets/common.dart';
 
 class SystemUpdateScreen extends StatefulWidget {
@@ -21,7 +20,7 @@ class _SystemUpdateScreenState extends State<SystemUpdateScreen>{
         SwitchListTile(contentPadding:EdgeInsets.zero,title:const Text('Create backup first'),value:backup,onChanged:(v)=>setState(()=>backup=v)),
         const Text('This runs the same database installer used by Admin → System update on the website.'),
         const SizedBox(height:12),
-        FilledButton.icon(onPressed:()async{if(!await confirm(context,'Update database?','The app will run pending schema updates.',ok:'Update'))return;final r=await runTask(context,()=>apiOf(context).post('admin/update',{'backup_first':backup}));if(r!=null){showMessage(context,'${r['message']}');key.currentState?.reload();}},icon:const Icon(Icons.system_update_alt),label:const Text('Update database')),
+        FilledButton.icon(onPressed:()async{if(!await confirm(context,'Update database?','The app will run pending schema updates.',ok:'Update'))return;if(!context.mounted)return;final r=await runTask(context,()=>apiOf(context).post('admin/update',{'backup_first':backup}));if(!context.mounted)return;if(r!=null){showMessage(context,'${r['message']}');key.currentState?.reload();}},icon:const Icon(Icons.system_update_alt),label:const Text('Update database')),
       ]))),
     ]);}),
   );
