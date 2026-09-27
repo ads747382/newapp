@@ -34,8 +34,11 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        // Real phones only (ARM). Drops the stray x86_64 folder a plugin adds.
-        ndk { abiFilters += listOf("armeabi-v7a", "arm64-v8a") }
+        // Real phones only (ARM). The stray x86_64/x86 folder a plugin adds is dropped below via
+        // packaging.jniLibs.excludes instead of ndk.abiFilters: setting abiFilters here conflicts
+        // with Flutter's own splits.abi configuration on `flutter build apk --split-per-abi`
+        // ("Conflicting configuration: ... in ndk abiFilters cannot be present when splits abi
+        // filters are set").
     }
 
     signingConfigs {
