@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../core/format.dart';
 import '../../core/session.dart';
 import '../../widgets/common.dart';
-import '../../widgets/lists.dart';
 import '../password_screen.dart';
 import '../receipt_screen.dart';
 import '../rules_screen.dart';
@@ -83,7 +82,7 @@ class _PortalPayments extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(appBar: AppBar(title: const Text('Payments')), body: LoadView(load: () => apiOf(context).get('portal/payments'), builder: (context, d, reload) {
     final rows = (d['entries'] as List?) ?? (d['payments'] as List?) ?? const [];
-    return Column(children: [for (final x in rows) Card(child: ListTile(title: Text('${x['type_label'] ?? x['entry_type'] ?? 'Payment'}'), subtitle: Text('${fmtDate(x['date'] ?? x['entry_date'])} · ${x['description'] ?? ''}'), trailing: Text(money(toDouble(x['credit']) > 0 ? x['credit'] : x['debit']), style: const TextStyle(fontWeight: FontWeight.w700)), onTap: x['id'] == null || toDouble(x['credit']) <= 0 ? null : () => Navigator.push(context, MaterialPageRoute(builder: (_) => ReceiptScreen(route: 'portal/receipts/${x['id']}'))))))]);
+    return Column(children: [for (final x in rows) Card(child: ListTile(title: Text('${x['type_label'] ?? x['entry_type'] ?? 'Payment'}'), subtitle: Text('${fmtDate(x['date'] ?? x['entry_date'])} · ${x['description'] ?? ''}'), trailing: Text(money(toDouble(x['credit']) > 0 ? x['credit'] : x['debit']), style: const TextStyle(fontWeight: FontWeight.w700)), onTap: x['id'] == null || toDouble(x['credit']) <= 0 ? null : () => Navigator.push(context, MaterialPageRoute(builder: (_) => ReceiptScreen(route: 'portal/receipts/${x['id']}')))))]);
   }));
 }
 
@@ -123,16 +122,4 @@ class _PortalMore extends StatelessWidget {
       Card(child: ListTile(leading: const Icon(Icons.logout), title: const Text('Sign out'), onTap: s.logout)),
     ]));
   }
-}
-
-
-class _AttendanceDay extends StatelessWidget {
-  const _AttendanceDay({required this.raw});
-  final Map<String, dynamic> raw;
-  @override
-  Widget build(BuildContext context) => Card(child: ListTile(
-    title: Text(fmtDate(raw['date'])),
-    subtitle: Text('IN ${raw['ins']} · OUT ${raw['outs']}${raw['late'] == true || toInt(raw['late']) > 0 ? ' · Late' : ''}'),
-    trailing: Text('${(raw['moves'] as List?)?.length ?? 0} moves'),
-  ));
 }
