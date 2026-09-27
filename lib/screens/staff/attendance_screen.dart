@@ -104,6 +104,7 @@ class _ResidentAttendanceScreenState extends State<ResidentAttendanceScreen> {
   Future<void> _mark(BuildContext context, String direction) async {
     final note = await askText(context, '${direction == 'in' ? 'Check in' : 'Check out'} ${widget.name}', label: 'Note (optional)', required: false, ok: 'Save');
     if (note == null) return;
+    if (!mounted) return;
     final r = await runTask(context, () => apiOf(context).post('residents/${widget.id}/attendance', {'direction': direction, 'note': note}));
     if (r != null) key.currentState?.reload();
   }
