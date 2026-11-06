@@ -20,7 +20,13 @@ jobs:
         with:
           gradle-version: '8.10.2'
       - run: echo "sdk.dir=$ANDROID_HOME" > local.properties && yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
-      - run: gradle :app:assembleDebug --no-daemon --stacktrace
+      - name: Build debug APK
+        run: |
+          set -o pipefail
+          if ! gradle :app:assembleDebug --no-daemon 2>&1 | tee build.log; then
+            grep -E "^e: |error:|What went wrong|Could not|> " build.log | head -40 | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: PersonalSmsGateway-debug-apk
