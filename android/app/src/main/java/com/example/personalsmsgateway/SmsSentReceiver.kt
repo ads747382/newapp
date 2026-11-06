@@ -7,6 +7,8 @@ import android.content.Intent
 
 class SmsSentReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        // Read the result code BEFORE goAsync(): afterwards getResultCode() always returns 0.
+        val code = resultCode
         val pending = goAsync()
         Thread {
             try {
@@ -15,8 +17,8 @@ class SmsSentReceiver : BroadcastReceiver() {
                 val key = intent.getStringExtra("device_key") ?: ""
                 if (id > 0 && url.startsWith("https://") && key.length >= 40) {
                     val api = ApiClient(url, key)
-                    if (resultCode == Activity.RESULT_OK) api.report(id, true)
-                    else api.report(id, false, "Android telephony send result code: $resultCode")
+                    if (code == Activity.RESULT_OK) api.report(id, true)
+                    else api.report(id, false, "Android telephony send result code: $code")
                 }
             } catch (_: Exception) {
                 // Server claim timeout will recover the job if callback cannot reach server.
