@@ -1,0 +1,5 @@
+Open this folder in Android Studio. Use JDK 17 and Android SDK Platform 35.
+Build > Build Bundle(s) / APK(s) > Build APK(s).
+Output: app/build/outputs/apk/debug/app-debug.apk
+
+This is a source project, not a precompiled APK. Verify the APK on a spare/test Android phone first.
