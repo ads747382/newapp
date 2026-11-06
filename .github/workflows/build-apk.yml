@@ -24,7 +24,7 @@ jobs:
         run: |
           set -o pipefail
           if ! gradle :app:assembleDebug --no-daemon 2>&1 | tee build.log; then
-            grep -E "^e: |error:|What went wrong|Could not|> " build.log | head -40 | while IFS= read -r line; do echo "::error::$line"; done
+            grep -vE "^> Task|^$" build.log | grep -iE "^e: |error|wrong|could not|failed|^  > |^> " | head -9 | while IFS= read -r line; do echo "::error::$line"; done
             exit 1
           fi
       - uses: actions/upload-artifact@v4
