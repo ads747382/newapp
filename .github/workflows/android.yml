@@ -52,7 +52,7 @@ jobs:
         run: |
           set -o pipefail
           if ! gradle :app:assembleRelease --no-daemon 2>&1 | tee build.log; then
-            grep -E "^e: |What went wrong|^> " build.log | head -9 | while IFS= read -r l; do echo "::error::$l"; done
+            grep -vE "^> Task|^$" build.log | grep -iE "^e: |wrong|error|failed|^  > |^> " | head -9 | while IFS= read -r l; do echo "::error::$l"; done
             exit 1
           fi
           VERSION=$(grep -oP "versionName '\K[^']+" app/build.gradle)
