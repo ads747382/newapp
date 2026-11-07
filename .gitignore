@@ -1,0 +1,14 @@
+# Build output
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+
+# Secrets
+server/app/config.php
+*.jks
+!android/app/shared-test.keystore
+
+.DS_Store
+.idea/

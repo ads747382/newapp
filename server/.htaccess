@@ -1,0 +1,5 @@
+Options -Indexes
+# Pass the Authorization header to PHP (some shared hosts drop it).
+<IfModule mod_setenvif.c>
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>
