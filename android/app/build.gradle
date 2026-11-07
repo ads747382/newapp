@@ -51,6 +51,11 @@ android {
         }
     }
 
+    lint {
+        // The app is sideloaded (not on Google Play), so Play's target-SDK rule does not apply.
+        disable 'ExpiredTargetSdkVersion'
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
